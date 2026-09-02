@@ -16,9 +16,9 @@ Read only the task explicitly referenced by the user in the `tasks/` directory b
 
 Each task can produce these artifacts:
 
-* `tasks/<task-id>-<task-name>.md`: task requirements, constraints, and acceptance criteria.
-* `plans/<task-id>-<task-name>.md`: detailed discovery and implementation plan.
-* `summaries/<task-id>-<task-name>-summary.md`: structured metadata and execution summary.
+- `tasks/<task-id>-<task-name>.md`: task requirements, constraints, and acceptance criteria.
+- `plans/<task-id>-<task-name>.md`: detailed discovery and implementation plan.
+- `summaries/<task-id>-<task-name>-summary.md`: structured metadata and execution summary.
 
 Rules must remain in `agent-rules/` and must not be copied into task, plan, or summary files.
 
@@ -29,27 +29,32 @@ Rules must remain in `agent-rules/` and must not be copied into task, plan, or s
 1. Read the task file explicitly referenced by the user.
 2. Follow:
 
-   * [Planning rules](./agent-rules/planning.md)
+   - [Planning rules](./agent-rules/planning.md)
+
 3. Inspect only the repository areas relevant to the task.
 4. Create the detailed planning output in:
 
-   * `plans/<task-id>-<task-name>.md`
+   - `plans/<task-id>-<task-name>.md`
+
 5. Create the task summary in:
 
-   * `summaries/<task-id>-<task-name>-summary.md`
+   - `summaries/<task-id>-<task-name>-summary.md`
+
 6. Add the planning metadata produced according to `planning.md` under:
 
-   * `## Step: planning`
+   - `## Step: planning`
 
 ### 2. Unit-Test Planning
 
 1. After the initial plan exists, follow:
 
-   * [Planning unit-test rules](./agent-rules/planning-unit-tests.md)
+   - [Planning unit-test rules](./agent-rules/planning-unit-tests.md)
+
 2. Append the detailed unit-test plan to the existing plan file.
 3. Add the structured unit-test planning result under:
 
-   * `## Step: planning-unit-tests`
+   - `## Step: planning-unit-tests`
+
 4. Update planning estimates when required by the unit-test planning rules.
 5. Present the completed plan and summary to the user.
 6. Stop and wait for explicit approval.
@@ -65,32 +70,35 @@ Rules must remain in `agent-rules/` and must not be copied into task, plan, or s
 
 1. After execution, follow:
 
-   * [Execution-report rules](./agent-rules/execution-report.md)
+   - [Execution-report rules](./agent-rules/execution-report.md)
+
 2. Add the structured execution result to the task summary under:
 
-   * `## Step: execution-report`
+   - `## Step: execution-report`
+
 3. Add the human-readable delivery report under:
 
-   * `## Step: delivery-report`
+   - `## Step: delivery-report`
+
 4. Present the completed summary to the user.
 
 ## Progressive Disclosure
 
 Load each rule file only when its workflow stage becomes relevant:
 
-* Load `planning.md` during discovery, estimation, and planning.
-* Load `planning-unit-tests.md` only after the initial implementation plan exists.
-* Load `execution-report.md` only after an approved execution has occurred.
+- Load `planning.md` during discovery, estimation, and planning.
+- Load `planning-unit-tests.md` only after the initial implementation plan exists.
+- Load `execution-report.md` only after an approved execution has occurred.
 
 Do not:
 
-* load unrelated rule files in advance;
-* load unrelated tasks, plans, or summaries;
-* read previous task artifacts unless the current task explicitly depends on them;
-* copy rule-file contents into `AGENTS.md`;
-* copy rule-file contents into task files;
-* copy JSON schemas into plan files;
-* create empty future workflow steps as placeholders.
+- load unrelated rule files in advance;
+- load unrelated tasks, plans, or summaries;
+- read previous task artifacts unless the current task explicitly depends on them;
+- copy rule-file contents into `AGENTS.md`;
+- copy rule-file contents into task files;
+- copy JSON schemas into plan files;
+- create empty future workflow steps as placeholders.
 
 ## Summary Lifecycle
 
@@ -108,34 +116,47 @@ planning
 
 Each workflow stage must:
 
-* write only its own section;
-* preserve previously written sections;
-* use the output format defined by its corresponding rule file;
-* avoid creating sections for stages that have not occurred.
+- write only its own section;
+- preserve previously written sections;
+- use the output format defined by its corresponding rule file;
+- avoid creating sections for stages that have not occurred.
 
 ## Global Constraints
 
-* Never implement during discovery or planning.
-* Never expand the task scope.
-* State assumptions, risks, missing information, and open questions.
-* Do not silently resolve product or architectural decisions.
-* Prefer the smallest design that satisfies the approved requirements.
-* Reuse existing project conventions before introducing new ones.
-* Preserve existing user changes.
-* Do not suppress validation failures.
-* Do not fabricate time, token, cost, status, or model information.
-* Use `null` when a required measurement is unavailable and explain why.
+- Never implement during discovery or planning.
+- Never expand the task scope.
+- State assumptions, risks, missing information, and open questions.
+- Do not silently resolve product or architectural decisions.
+- Prefer the smallest design that satisfies the approved requirements.
+- Reuse existing project conventions before introducing new ones.
+- Preserve existing user changes.
+- Do not suppress validation failures.
+- Do not fabricate time, token, cost, status, or model information.
+- Use `null` when a required measurement is unavailable and explain why.
 
 ## Validation
 
-Project validation commands have not been configured yet.
+Confirmed non-interactive validation commands for project setup:
 
-During project setup:
-
-- Define the independent non-interactive validation commands.
-- Execute and confirm each command.
-- Replace this section with the confirmed validation commands.
-- Do not document commands that have not been executed successfully.
+- `npm install`: install dependencies from the repository root and generate the single root `package-lock.json`.
+- `npm ls --workspaces --depth 0`: confirm npm recognizes the `@study-tron/frontend` and `@study-tron/backend` workspaces.
+- `npm run dev:frontend`: start the frontend Vite server from the repository root, confirm startup at `http://127.0.0.1:5173/`, and stop it normally.
+- `npm run test:frontend`: run the frontend Vitest proof test.
+- `npm run lint:frontend`: run frontend ESLint validation.
+- `npm run format:check:frontend`: run frontend Prettier verification.
+- `npm run typecheck:frontend`: run frontend TypeScript validation.
+- `npm run build:frontend`: run the frontend production build.
+- `npm run dev:backend`: run the backend from the repository root and confirm it prints `Hello world, from backend application`.
+- `npm run test:backend`: run the backend Jest proof test.
+- `npm run lint:backend`: run backend ESLint validation.
+- `npm run format:check:backend`: run backend Prettier verification.
+- `npm run typecheck:backend`: run backend TypeScript validation.
+- `npm run build:backend`: run the backend production build.
+- `npm run lint`: run repository-wide lint validation across both workspaces.
+- `npm run format:check`: run repository-wide Prettier verification for the root and both workspaces.
+- `npm run typecheck`: run repository-wide TypeScript validation across both workspaces.
+- `npm run test`: run repository-wide unit tests across both workspaces.
+- `npm run build`: run repository-wide production builds across both workspaces.
 
 For subsequent tasks:
 
@@ -148,12 +169,12 @@ For subsequent tasks:
 
 A task is complete when:
 
-* the approved scope has been implemented;
-* all acceptance criteria are satisfied;
-* the tests defined in the approved plan pass;
-* required validations pass;
-* no unrelated changes were introduced;
-* deviations from the approved plan are reported;
-* known limitations are reported;
-* the summary contains the completed workflow stages;
-* the delivery report has been presented to the user.
+- the approved scope has been implemented;
+- all acceptance criteria are satisfied;
+- the tests defined in the approved plan pass;
+- required validations pass;
+- no unrelated changes were introduced;
+- deviations from the approved plan are reported;
+- known limitations are reported;
+- the summary contains the completed workflow stages;
+- the delivery report has been presented to the user.
