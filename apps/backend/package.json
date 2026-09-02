@@ -1,0 +1,15 @@
+{
+  "name": "@study-tron/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build && node dist/index.js",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "npm run clean:test && tsc -p tsconfig.test.json && NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.mjs --runInBand",
+    "clean:test": "node -e \"require('node:fs').rmSync('.test-dist', { recursive: true, force: true })\"",
+    "lint": "eslint .",
+    "format:check": "prettier --check . --ignore-path ../../.prettierignore"
+  }
+}
