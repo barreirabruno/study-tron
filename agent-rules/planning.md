@@ -11,7 +11,7 @@ Do not implement application code or tests during this stage.
 3. Identify assumptions, risks, missing information, and open questions.
 4. Estimate the task size.
 5. Create the detailed implementation plan.
-6. Estimate time, tokens, confidence, and suitable model capability.
+6. Estimate time, tokens, confidence, exact model, and reasoning effort for a fresh execution session.
 7. Write the detailed plan and structured planning metadata to their corresponding artifacts.
 8. Return control to the project workflow without implementing anything.
 
@@ -169,12 +169,36 @@ When a section is not applicable, state that it is not applicable and briefly ex
 
 Estimates are ranges, not exact promises.
 
+All token and execution-time estimates must use `FRESH_EXECUTION_SESSION` as their measurement scope.
+
+The estimate includes:
+
+* loading the repository instructions, approved task, and approved plan in a fresh Codex session;
+* implementing the approved application changes;
+* implementing the approved unit tests;
+* running the required validation commands;
+* diagnosing failures and performing reasonable correction attempts;
+* producing the execution report and delivery report.
+
+The estimate excludes:
+
+* discovery;
+* initial task estimation;
+* implementation planning;
+* unit-test planning;
+* conversations and questions before execution approval;
+* time waiting for user approval;
+* token usage from any previous or resumed Codex session;
+* externally captured metrics and calibration added after the execution session ends.
+
 Include:
 
+* measurement scope;
 * estimated token range;
 * estimated execution-time range in minutes;
 * estimation confidence;
-* recommended model;
+* exact recommended model identifier;
+* recommended reasoning effort;
 * model recommendation rationale.
 
 Use one estimation-confidence value:
@@ -188,9 +212,13 @@ Do not:
 * claim exact token usage before execution;
 * claim exact execution time before execution;
 * fabricate model availability;
+* use a generic model family name when an exact model identifier is available;
+* omit the reasoning effort;
 * recommend a model without explaining the quality, cost, and velocity trade-off.
 
-If available models cannot be determined, set the model name to `null` and describe the required model capability in the rationale.
+The recommended model name must contain an exact model identifier available in the current Codex environment.
+
+If the available model identifiers or reasoning-effort options cannot be determined, report the missing information as an open question. Do not use `null`, infer a model name, or claim that the recommendation is complete.
 
 ## Structured Planning Metadata
 
@@ -205,6 +233,27 @@ Use this valid JSON shape under `## Step: planning` in the corresponding summary
     "confidence": "MEDIUM",
     "rationale": "Explain why the task received this size"
   },
+  "estimation_scope": {
+    "measurement_scope": "FRESH_EXECUTION_SESSION",
+    "includes": [
+      "Repository instructions, approved task, and approved plan loading",
+      "Application implementation",
+      "Unit-test implementation",
+      "Required validations",
+      "Failure diagnosis and reasonable correction attempts",
+      "Execution report and delivery report"
+    ],
+    "excludes": [
+      "Discovery",
+      "Initial estimation",
+      "Implementation planning",
+      "Unit-test planning",
+      "Pre-approval conversations",
+      "Time waiting for user approval",
+      "Previous or resumed Codex sessions",
+      "External metrics capture and calibration"
+    ]
+  },
   "estimated_tokens": {
     "minimum": 10000,
     "maximum": 18000
@@ -215,8 +264,9 @@ Use this valid JSON shape under `## Step: planning` in the corresponding summary
   },
   "estimation_confidence": "MEDIUM",
   "recommended_model": {
-    "name": null,
-    "rationale": "Explain the required capability and the quality, cost, and velocity trade-off"
+    "name": "Exact model identifier",
+    "reasoning_effort": "MEDIUM",
+    "rationale": "Explain the quality, cost, and velocity trade-off"
   },
   "open_questions": []
 }
@@ -226,4 +276,4 @@ Use an empty `open_questions` array when no unresolved planning question exists.
 
 The metadata must remain consistent with the detailed plan.
 
-Do not claim that planning is complete when requirements, dependencies, affected areas, or acceptance criteria remain unresolved.
+Do not claim that planning is complete when requirements, dependencies, affected areas, acceptance criteria, available model identifiers, or reasoning-effort options remain unresolved.
