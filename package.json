@@ -1,0 +1,29 @@
+{
+  "name": "study-tron",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run dev --workspace @study-tron/frontend",
+    "dev:backend": "npm run dev --workspace @study-tron/backend",
+    "test:frontend": "npm run test --workspace @study-tron/frontend",
+    "test:backend": "npm run test --workspace @study-tron/backend",
+    "lint:frontend": "npm run lint --workspace @study-tron/frontend",
+    "lint:backend": "npm run lint --workspace @study-tron/backend",
+    "format:check:root": "prettier --check \"*.{json,js,md}\"",
+    "format:check:frontend": "npm run format:check --workspace @study-tron/frontend",
+    "format:check:backend": "npm run format:check --workspace @study-tron/backend",
+    "typecheck:frontend": "npm run typecheck --workspace @study-tron/frontend",
+    "typecheck:backend": "npm run typecheck --workspace @study-tron/backend",
+    "build:frontend": "npm run build --workspace @study-tron/frontend",
+    "build:backend": "npm run build --workspace @study-tron/backend",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "format:check": "npm run format:check:root && npm run format:check:frontend && npm run format:check:backend",
+    "typecheck": "npm run typecheck:frontend && npm run typecheck:backend",
+    "test": "npm run test:frontend && npm run test:backend",
+    "build": "npm run build:frontend && npm run build:backend"
+  }
+}
